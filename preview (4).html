@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Possible Futures | Interactive Vocabulary Checklist</title>
+
+  <meta name="description" content="Interactive vocabulary checklist for future forms, predictions, speculation, may, might, must and would rather." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=League+Spartan:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f7f1ff;
+      --panel: rgba(255,255,255,0.88);
+      --panel-strong: #ffffff;
+      --text: #1d1630;
+      --muted: #746b92;
+      --purple: #8f6bff;
+      --purple-dark: #6c4bf4;
+      --blue: #bde9ff;
+      --yellow: #fff27a;
+      --pink: #ff9be6;
+      --green: #b8ffd9;
+      --line: rgba(29,22,48,0.14);
+      --shadow: 0 22px 60px rgba(80,55,160,0.18);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 22px;
+      background:
+        radial-gradient(circle at top left, rgba(189,233,255,.85), transparent 32%),
+        radial-gradient(circle at 80% 10%, rgba(255,155,230,.55), transparent 28%),
+        radial-gradient(circle at 50% 90%, rgba(255,242,122,.45), transparent 30%),
+        var(--bg);
+      font-family: "Poppins", sans-serif;
+      color: var(--text);
+    }
+
+    .page {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+
+    .window {
+      border: 2px solid #111;
+      border-radius: 18px 18px 10px 10px;
+      overflow: hidden;
+      background: rgba(255,255,255,.78);
+      box-shadow: 8px 8px 0 #111;
+      margin-bottom: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 18px;
+      border-bottom: 2px solid #111;
+      background: linear-gradient(90deg, #dcd1ff, #bde9ff);
+    }
+
+    .brand {
+      font-family: "League Spartan", sans-serif;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: clamp(1.1rem, 2vw, 1.45rem);
+      letter-spacing: .02em;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .buttons span {
+      width: 32px;
+      height: 32px;
+      border: 2px solid #111;
+      display: grid;
+      place-items: center;
+      background: var(--pink);
+      font-weight: 800;
+    }
+
+    .hero {
+      padding: clamp(30px, 6vw, 72px) clamp(20px, 5vw, 64px);
+      background: rgba(255,255,255,.64);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 2px solid #111;
+      background: var(--yellow);
+      border-radius: 999px;
+      box-shadow: 4px 4px 0 #111;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "League Spartan", sans-serif;
+      font-size: clamp(3rem, 8vw, 6.4rem);
+      line-height: .88;
+      text-transform: uppercase;
+      letter-spacing: -.045em;
+      max-width: 900px;
+    }
+
+    .subtitle {
+      margin-top: 22px;
+      max-width: 760px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: clamp(1rem, 2vw, 1.15rem);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      border: 2px solid #111;
+      border-radius: 16px;
+      padding: 13px 18px;
+      background: white;
+      font-family: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 5px 5px 0 #111;
+      transition: .18s ease;
+      text-decoration: none;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn:hover {
+      transform: translate(2px,2px);
+      box-shadow: 3px 3px 0 #111;
+    }
+
+    .btn.primary {
+      background: var(--purple);
+      color: white;
+    }
+
+    .btn.secondary {
+      background: var(--blue);
+    }
+
+    .btn.pdf {
+      background: var(--yellow);
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .search {
+      width: 100%;
+      border: 2px solid #111;
+      border-radius: 18px;
+      padding: 15px 18px;
+      background: rgba(255,255,255,.86);
+      box-shadow: 5px 5px 0 #111;
+      font-family: inherit;
+      font-weight: 600;
+    }
+
+    .progress {
+      border: 2px solid #111;
+      border-radius: 18px;
+      background: var(--panel);
+      padding: 14px 18px;
+      box-shadow: 5px 5px 0 #111;
+      font-weight: 800;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 18px;
+    }
+
+    .category {
+      border: 2px solid #111;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .category-header {
+      width: 100%;
+      border: 0;
+      border-bottom: 2px solid #111;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 20px;
+      text-align: left;
+      cursor: pointer;
+      background: white;
+    }
+
+    .category:nth-child(4n+1) .category-header { background: #efe7ff; }
+    .category:nth-child(4n+2) .category-header { background: #e5f7ff; }
+    .category:nth-child(4n+3) .category-header { background: #fff8a8; }
+    .category:nth-child(4n+4) .category-header { background: #ffe2f6; }
+
+    .category-title strong {
+      display: block;
+      font-family: "League Spartan", sans-serif;
+      font-size: 1.45rem;
+      text-transform: uppercase;
+    }
+
+    .category-title span {
+      color: var(--muted);
+      font-size: .9rem;
+      font-weight: 600;
+    }
+
+    .toggle {
+      min-width: 36px;
+      height: 36px;
+      border: 2px solid #111;
+      background: white;
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      font-weight: 900;
+    }
+
+    .category-body {
+      display: none;
+      padding: 18px 20px 20px;
+    }
+
+    .category.open .category-body {
+      display: block;
+    }
+
+    .category.open .toggle {
+      background: var(--green);
+    }
+
+    .items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1.5px solid var(--line);
+      background: rgba(255,255,255,.72);
+      transition: .18s ease;
+    }
+
+    .item.done {
+      background: rgba(184,255,217,.55);
+    }
+
+    .item input {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--purple-dark);
+      cursor: pointer;
+    }
+
+    .chunk {
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .copy {
+      border: 1.5px solid #111;
+      border-radius: 10px;
+      background: white;
+      padding: 7px 9px;
+      font-size: .8rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .footer {
+      margin-top: 30px;
+      border: 2px solid #111;
+      border-radius: 24px;
+      padding: 22px;
+      background: rgba(255,255,255,.72);
+      box-shadow: 7px 7px 0 #111;
+    }
+
+    .footer h2 {
+      margin: 0 0 10px;
+      font-family: "League Spartan", sans-serif;
+      font-size: 2rem;
+      text-transform: uppercase;
+    }
+
+    .footer ol {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 600;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%) translateY(120px);
+      background: #111;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: .25s ease;
+      z-index: 50;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 780px) {
+      body { padding: 14px; }
+      .grid { grid-template-columns: 1fr; }
+      .toolbar { grid-template-columns: 1fr; }
+      .item { grid-template-columns: auto 1fr; }
+      .copy {
+        grid-column: 2;
+        justify-self: start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main class="page">
+
+  <section class="window">
+    <div class="topbar">
+      <div class="brand">Teacher Debs’ Classes</div>
+
+      <div class="buttons">
+        <span>–</span>
+        <span>□</span>
+        <span>×</span>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="eyebrow">Interactive Vocabulary Checklist</div>
+
+      <h1>Possible Futures</h1>
+
+      <p class="subtitle">
+        Future forms, predictions, speculation, theories, preferences and useful language for speaking and writing practice.
+      </p>
+
+      <div class="actions">
+        <button class="btn primary" id="expandBtn">Expand all</button>
+        <button class="btn secondary" id="resetBtn">Reset checklist</button>
+        <a class="btn pdf" href="Possible_Futures_Vocabulary_Checklist.pdf" download>
+          Download PDF
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="toolbar">
+    <input
+      type="search"
+      id="searchInput"
+      class="search"
+      placeholder="Search vocabulary..."
+    />
+
+    <div class="progress">
+      <span id="checkedCount">0</span>/<span id="totalCount">0</span> checked
+    </div>
+  </section>
+
+  <section class="grid" id="grid"></section>
+
+  <section class="footer">
+    <h2>How to use</h2>
+
+    <ol>
+      <li>Open the categories.</li>
+      <li>Check the vocabulary you already know.</li>
+      <li>Copy useful chunks and practice speaking or writing.</li>
+      <li>Use the PDF button if you want the printable version.</li>
+    </ol>
+  </section>
+
+</main>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+
+const categories = [
+
+{
+title: "Future Plans",
+subtitle: "Plans, intentions, goals and future lifestyle",
+items: [
+"I’m going to…",
+"I’ll probably…",
+"I might…",
+"I could see myself…",
+"I don’t think I’ll…",
+"In the future, I’ll…",
+"I’m planning to…",
+"I’d like to…",
+"work remotely",
+"move abroad",
+"change careers",
+"live near the beach",
+"travel more often",
+"have a flexible routine",
+"focus on stability",
+"build a better routine"
+]
+},
+
+{
+title: "Predictions & Possibilities",
+subtitle: "Technology, society, trends and future changes",
+items: [
+"People will probably…",
+"AI might…",
+"Social media may…",
+"This could become…",
+"I think people will…",
+"I don’t think…",
+"There’s a chance that…",
+"It may become…",
+"replace jobs",
+"disappear over time",
+"become more common",
+"change the way people…",
+"lose popularity",
+"become dangerous",
+"depend on technology",
+"interact online"
+]
+},
+
+{
+title: "Speculation & Theories",
+subtitle: "Mysteries, strange situations, assumptions and theories",
+items: [
+"He may be…",
+"She might have…",
+"They must be…",
+"He must have…",
+"She may not know…",
+"They might be hiding something.",
+"That must be difficult.",
+"This might explain why…",
+"be exhausted",
+"hide something",
+"avoid someone",
+"feel overwhelmed",
+"work online",
+"deal with pressure",
+"feel lonely",
+"regret something"
+]
+},
+
+{
+title: "Would Rather",
+subtitle: "Choices, preferences, debate and comparison",
+items: [
+"I’d rather…",
+"I’d rather not…",
+"Would you rather…?",
+"I prefer…",
+"I’d rather live…",
+"I’d rather work…",
+"I prefer having…",
+"live abroad",
+"work remotely",
+"have flexibility",
+"live alone",
+"avoid stress",
+"discover things slowly",
+"have stability",
+"keep my privacy"
+]
+},
+
+{
+title: "Opinion & Reaction Language",
+subtitle: "Keeping conversations flowing naturally",
+items: [
+"Honestly…",
+"To be honest…",
+"I feel like…",
+"I’ve noticed that…",
+"It depends…",
+"That makes sense.",
+"I’ve never thought about that before.",
+"I’m not totally sure, but…",
+"react to an idea",
+"agree with a point",
+"disagree politely",
+"justify an opinion",
+"give an example",
+"compare possibilities",
+"explain a consequence"
+]
+},
+
+{
+title: "High-Frequency Verbs",
+subtitle: "Reusable verbs for future and speculation topics",
+items: [
+"replace",
+"avoid",
+"improve",
+"disappear",
+"depend on",
+"change",
+"move",
+"deal with",
+"regret",
+"manage",
+"predict",
+"imagine",
+"choose",
+"prefer",
+"become",
+"continue",
+"affect",
+"create"
+]
+},
+
+{
+title: "Future Society",
+subtitle: "Useful vocabulary for trends and future behavior",
+items: [
+"future generations",
+"human behavior",
+"technology",
+"privacy",
+"exposure",
+"online identity",
+"remote work",
+"artificial intelligence",
+"traditional jobs",
+"creative jobs",
+"repetitive jobs",
+"social media",
+"streaming platforms",
+"consumer behavior",
+"big cities",
+"smaller towns"
+]
+},
+
+{
+title: "Uncertainty & Probability",
+subtitle: "Language for weak, medium and strong certainty",
+items: [
+"maybe",
+"probably",
+"possibly",
+"certainly",
+"definitely",
+"unlikely",
+"very likely",
+"less likely",
+"one possible explanation",
+"everything points to…",
+"there are several possibilities",
+"it makes sense that…",
+"it could be true",
+"it may happen",
+"it might happen",
+"it must be true"
+]
+}
+
+];
+
+const grid = document.getElementById("grid");
+const checkedCount = document.getElementById("checkedCount");
+const totalCount = document.getElementById("totalCount");
+const searchInput = document.getElementById("searchInput");
+const toast = document.getElementById("toast");
+
+const storageKey = "possible-futures-vocabulary-checklist";
+
+let checked = JSON.parse(localStorage.getItem(storageKey) || "{}");
+
+function save() {
+  localStorage.setItem(storageKey, JSON.stringify(checked));
+}
+
+function render() {
+
+  const query = searchInput.value.trim().toLowerCase();
+
+  grid.innerHTML = "";
+
+  categories.forEach((category, categoryIndex) => {
+
+    const filtered = category.items
+      .map((item, itemIndex) => ({ item, itemIndex }))
+      .filter(({ item }) =>
+        item.toLowerCase().includes(query) ||
+        category.title.toLowerCase().includes(query) ||
+        category.subtitle.toLowerCase().includes(query)
+      );
+
+    if(query && filtered.length === 0) return;
+
+    const article = document.createElement("article");
+    article.className = "category open";
+
+    article.innerHTML = `
+      <button class="category-header">
+        <div class="category-title">
+          <strong>${category.title}</strong>
+          <span>${category.subtitle}</span>
+        </div>
+
+        <div class="toggle">−</div>
+      </button>
+
+      <div class="category-body">
+        <ul class="items">
+
+          ${filtered.map(({ item, itemIndex }) => {
+
+            const id = `${categoryIndex}-${itemIndex}`;
+            const isChecked = checked[id];
+
+            return `
+              <li class="item ${isChecked ? "done" : ""}" data-id="${id}" data-text="${item}">
+                <input type="checkbox" ${isChecked ? "checked" : ""}>
+
+                <span class="chunk">${item}</span>
+
+                <button class="copy">Copy</button>
+              </li>
+            `;
+
+          }).join("")}
+
+        </ul>
+      </div>
+    `;
+
+    grid.appendChild(article);
+
+  });
+
+  attachEvents();
+  updateProgress();
+
+}
+
+function attachEvents() {
+
+  document.querySelectorAll(".category-header").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      const category = button.closest(".category");
+
+      const isOpen = category.classList.toggle("open");
+
+      button.querySelector(".toggle").textContent =
+        isOpen ? "−" : "+";
+
+    });
+
+  });
+
+  document.querySelectorAll(".item input").forEach(input => {
+
+    input.addEventListener("change", () => {
+
+      const item = input.closest(".item");
+
+      checked[item.dataset.id] = input.checked;
+
+      item.classList.toggle("done", input.checked);
+
+      save();
+
+      updateProgress();
+
+    });
+
+  });
+
+  document.querySelectorAll(".copy").forEach(button => {
+
+    button.addEventListener("click", async () => {
+
+      const text = button.closest(".item").dataset.text;
+
+      await navigator.clipboard.writeText(text);
+
+      showToast("Copied!");
+
+    });
+
+  });
+
+}
+
+function updateProgress() {
+
+  const total = categories.reduce(
+    (sum, category) => sum + category.items.length,
+    0
+  );
+
+  const done = Object.values(checked).filter(Boolean).length;
+
+  checkedCount.textContent = done;
+  totalCount.textContent = total;
+
+}
+
+function showToast(message) {
+
+  toast.textContent = message;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 1400);
+
+}
+
+searchInput.addEventListener("input", render);
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+
+  checked = {};
+
+  save();
+
+  render();
+
+  showToast("Checklist reset");
+
+});
+
+document.getElementById("expandBtn").addEventListener("click", () => {
+
+  document.querySelectorAll(".category").forEach(category => {
+    category.classList.add("open");
+    category.querySelector(".toggle").textContent = "−";
+  });
+
+});
+
+render();
+
+</script>
+
+</body>
+</html>
